@@ -1,10 +1,10 @@
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 from datetime import datetime
 import csv
 import os
 import boto3
 import logging 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def setup_logging():
     logging.basicConfig(
