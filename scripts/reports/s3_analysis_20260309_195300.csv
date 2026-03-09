@@ -1,0 +1,6 @@
+Bucket Name,Creation Date,Region,Size (MB),Has Lifecycle
+bucket-aqui-tbm-pra-testar-multi-account,2025-06-22 14:24:28+00:00,us-east-1,0.698,Não
+cf-templates-1uvt9vehg04uk-us-east-1,2025-03-04 19:07:57+00:00,us-east-1,0.728,Sim
+cf-templates-ww1k8a02hfen-us-east-1,2025-03-04 19:06:43+00:00,us-east-1,0.2597,Não
+meu-bucket-finops-rendell,2025-08-31 15:18:15+00:00,us-east-1,0.1704,Não
+teste-s3-analysis-sp-script-lifecycle,2026-02-27 23:27:59+00:00,sa-east-1,0.3421,Não

@@ -91,16 +91,20 @@ def main():
     for bucket in buckets:
         name = bucket['Name']
         created = bucket['CreationDate']
+        arn = bucket['BucketArn']
+
         lifecycle = has_lifecycle(s3, name)
         region = get_buckets_region(s3, name)
         size_mb = get_bucket_size(name, region)
-        logging.info(f"Bucket Name: {name} | Criado em: {created} | Região: {region} | Tamanho: {size_mb} MB | Lifecycle: {lifecycle}")
+        
+        logging.info(f"Bucket Name: {name} | Arn: {arn} | Criado em: {created} | Região: {region} | Tamanho: {size_mb} MB | Lifecycle: {lifecycle}") 
         data.append({
             'Bucket Name': name,
             'Creation Date': created,
             'Region': region,
             'Size (MB)': size_mb,
-            'Has Lifecycle': lifecycle
+            'Has Lifecycle': lifecycle,
+            'ARN':arn
         })
 
     export_to_csv(data)
