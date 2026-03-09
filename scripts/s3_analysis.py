@@ -80,6 +80,16 @@ def export_to_csv(data):
 
     logging.info(f"Relatório exportado para {filename}")  
 
+def get_optimization_status(size_mb, lifecycle):
+    if size_mb == 0.0:
+        return "Bucket vazio"
+    elif lifecycle == 'Sim':
+        return "✅ Lifecycle configurado"
+    
+    else:
+        return "⚠️ Candidato a revisão"
+
+
 def main():
     setup_logging()
     logging.info("Iniciando o script para listar buckets S3")
@@ -97,14 +107,18 @@ def main():
         region = get_buckets_region(s3, name)
         size_mb = get_bucket_size(name, region)
         
-        logging.info(f"Bucket Name: {name} | Arn: {arn} | Criado em: {created} | Região: {region} | Tamanho: {size_mb} MB | Lifecycle: {lifecycle}") 
+        optimization = get_optimization_status(size_mb, lifecycle)
+
+        logging.info(f"Bucket Name: {name} | Arn: {arn} | Criado em: {created} | Região: {region} | Tamanho: {size_mb} MB | Lifecycle: {lifecycle} | Status: {optimization}")  
+
         data.append({
             'Bucket Name': name,
             'Creation Date': created,
             'Region': region,
             'Size (MB)': size_mb,
             'Has Lifecycle': lifecycle,
-            'ARN':arn
+            'ARN':arn,
+            'Optimization Status': optimization
         })
 
     export_to_csv(data)
