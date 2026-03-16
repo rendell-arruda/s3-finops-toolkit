@@ -1,7 +1,14 @@
 import boto3
 import logging
 
-from collectors import list_buckets, has_lifecycle, get_buckets_region, get_bucket_size
+from collectors import (
+    list_buckets,
+    has_lifecycle,
+    get_buckets_region,
+    get_bucket_size,
+    get_storage_class_summary,
+)
+
 from analyzers import get_optimization_status
 from exporters import export_to_csv
 
@@ -19,7 +26,7 @@ def main():
     s3 = boto3.client("s3")
     buckets = list_buckets(s3)
 
-    data = []
+    resultados = []
     for bucket in buckets:
         name = bucket["Name"]
         created = bucket["CreationDate"]
@@ -30,23 +37,48 @@ def main():
         size_mb = get_bucket_size(name, region)
 
         optimization, recomendation = get_optimization_status(size_mb, lifecycle)
+        storage_summary = get_storage_class_summary(s3, name)
 
         logging.info(
             f"Bucket Name: {name} | Arn: {arn} | Criado em: {created} | Região: {region} | Tamanho: {size_mb} MB | Lifecycle: {lifecycle} | Status: {optimization}"
         )
 
-        data.append(
+        resultados.append(
             {
-                "Bucket Name": name,
-                "Creation Date": created,
-                "Region": region,
-                "Size (MB)": size_mb,
-                "Has Lifecycle": lifecycle,
-                "ARN": arn,
-                "Optimization Status": optimization,
-                "Recomendation": recomendation,
+                "name": name,
+                "created": created,
+                "arn": arn,
+                "lifecycle": lifecycle,
+                "region": region,
+                "size_mb": size_mb,
+                "optimization": optimization,
+                "recomendation": recomendation,
+                "storage": storage_summary,
             }
         )
+    todas_classes = set()
+    for r in resultados:
+        for classe in r["storage"].keys():
+            todas_classes.add(classe)
+
+    data = []
+    for r in resultados:
+        row = {
+            "Bucket Name": r["name"],
+            "Creation Date": r["created"],
+            "Region": r["region"],
+            "Size (MB)": r["size_mb"],
+            "Has Lifecycle": r["lifecycle"],
+            "ARN": r["arn"],
+            "Optimization Status": r["optimization"],
+            "Recomendation": r["recomendation"],
+        }
+        for classe in todas_classes:
+            info = r["storage"].get(classe, {"count": 0, "size_mb": 0.0})
+            row[f"{classe}_count"] = info["count"]
+            row[f"{classe}_size_mb"] = round(info["size_mb"], 4)
+
+        data.append(row)
 
     export_to_csv(data)
     logging.info(f"total de buckets encontrados: {len(buckets)}")

@@ -1,0 +1,6 @@
+Bucket Name,Creation Date,Region,Size (MB),Has Lifecycle,ARN,Optimization Status,Recomendation,STANDARD_count,STANDARD_size_mb
+bucket-aqui-tbm-pra-testar-multi-account,2025-06-22 14:24:28+00:00,us-east-1,0.698,Não,arn:aws:s3:::bucket-aqui-tbm-pra-testar-multi-account,⚠️ Candidato a revisão,Configurar lifecycle policy,2,0.6979
+cf-templates-1uvt9vehg04uk-us-east-1,2025-03-04 19:07:57+00:00,us-east-1,0.0,Sim,arn:aws:s3:::cf-templates-1uvt9vehg04uk-us-east-1,Bucket vazio,Avaliar se pode ser deletado,0,0.0
+cf-templates-ww1k8a02hfen-us-east-1,2025-03-04 19:06:43+00:00,us-east-1,0.2597,Não,arn:aws:s3:::cf-templates-ww1k8a02hfen-us-east-1,⚠️ Candidato a revisão,Configurar lifecycle policy,2,0.2595
+meu-bucket-finops-rendell,2025-08-31 15:18:15+00:00,us-east-1,0.1704,Não,arn:aws:s3:::meu-bucket-finops-rendell,⚠️ Candidato a revisão,Configurar lifecycle policy,1,0.1704
+teste-s3-analysis-sp-script-lifecycle,2026-02-27 23:27:59+00:00,sa-east-1,0.3421,Não,arn:aws:s3:::teste-s3-analysis-sp-script-lifecycle,⚠️ Candidato a revisão,Configurar lifecycle policy,1,0.342

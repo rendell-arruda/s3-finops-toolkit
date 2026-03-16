@@ -54,3 +54,29 @@ def get_bucket_size(bucket_name, region):
     except Exception as e:
         logging.warning(f"Erro ao obter tamanho do bucket {bucket_name}: {e}")
         return 0.0
+
+
+def get_storage_class_summary(s3_client, bucket_name):
+    # 1. criar o paginator para list_objects_v2
+    paginator = s3_client.get_paginator("list_objects_v2")
+
+    # 2. criar um dict vazio para acumular os resultados
+    summary = {}
+    pages = paginator.paginate(Bucket=bucket_name)
+    for page in pages:
+        for obj in page.get("Contents", []):
+            storage_class = obj.get("StorageClass", "STANDARD")
+            size_mb = obj["Size"] / (1024**2)
+
+            if storage_class not in summary:
+                summary[storage_class] = {"count": 0, "size_mb": 0.0}
+
+            summary[storage_class]["count"] += 1
+            summary[storage_class]["size_mb"] += size_mb
+
+    return summary
+
+    # 3. iterar pelas páginas e objetos
+
+    # 4. retornar o dict
+    pass
